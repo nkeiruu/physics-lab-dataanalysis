@@ -2,3 +2,5 @@ Bananas
 Apple
 Carrot
 Dates
+Pineapple
+Apricots
