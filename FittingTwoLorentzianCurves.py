@@ -2,12 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
+# Parses csv file and stores them in 2 arrays
 def parse_file(file_name, header=True):
     x_axis_data = np.array([])
     y_axis_data = np.array([])
     with open(file_name) as file:
         for line in file:
-            if(header == True):
+            if(header == True): #skips first line if function call is set to true
                 header = False
                 continue
             split_line = line.split(',')
@@ -21,19 +22,22 @@ def curve_fit_lorentzian(imported_data, imported_data2):
     plt.figure(figsize=(10,8))
     plt.plot(imported_data[0], imported_data[1], 'ro')
     plt.plot(imported_data2[0], imported_data2[1], 'ko')
-    #What your guesses are for the function parameters
-   # InitialGuess = [1,3/20000, 1/2000,0.000000650]
+    #Set guessesfor the function parameters
+    # InitialGuess = [1,3/20000, 1/2000,0.000000650]
 
+    #Curve fit for 1st Lorentzian
     popt, pcov = curve_fit(lorentzian_func, imported_data[0], imported_data[1], maxfev=1000)
     xfit = np.arange(-2.5, 2.5, 0.001)
     plt.plot(xfit, lorentzian_func(xfit, *popt), 'r', label='Single Slit Pattern')
     print('y,z ', popt)
 
+    #Curve fit for 2nd Lorentzian
     popt2, pcov2 = curve_fit(lorentzian_func2, imported_data2[0], imported_data2[1], maxfev=1000)
     xfit2 = np.arange(-2.5, 2.5, 0.001)
     plt.plot(xfit, lorentzian_func2(xfit2, *popt2), 'k', label='Double Slit Pattern')
     print('y2,z2 ', popt2)
 
+    #Change plot appearance here
     plt.title("Lab 8: Diffraction", fontdict={'fontsize' : 30})
     plt.suptitle("Nkeiru Ubadike")
     plt.xlabel("Radians")
