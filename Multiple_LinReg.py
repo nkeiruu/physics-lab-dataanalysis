@@ -3,7 +3,7 @@ import numpy as np
 #Parsing CSV file
 #Reads info line by line each column seperated by column
 
-frequencies = np.array([400, 600, 1000, 1200, 1400])
+#frequencies = np.array([400, 600, 1000, 1200, 1400])
 
 def parse_file(file_name, header= True): #header ensures python disregards header
     x_Axis_data = np.array([]) #Hold info from CSV
@@ -25,29 +25,31 @@ def parse_file(file_name, header= True): #header ensures python disregards heade
     #This is a tuple two arrays        
     return(x_Axis_data, y_Axis_data)
 
-def plotting(imported_data1, imported_data2, imported_data3, imported_data4, imported_data5,
-        linear_regression1, linear_regression2, linear_regression3, linear_regression4, linear_regression5):
+def plotting(imported_data1, imported_data2, imported_data3,
+        linear_regression1, linear_regression2, linear_regression3):
     #Set size of your canvas in inches (I know, this is weird)
     plt.figure(figsize=(8,6))
     #Plot your first graph
     plt.plot(imported_data1[0], imported_data1[1], 'ro')
     plt.plot(imported_data2[0], imported_data2[1], 'ko')
     plt.plot(imported_data3[0], imported_data3[1], 'bo')
-    plt.plot(imported_data4[0], imported_data4[1], 'go')
-    plt.plot(imported_data5[0], imported_data5[1], 'yo')
-    plt.plot(linear_regression1[0], linear_regression1[1], 'r--', label= "400kHz")
-    plt.plot(linear_regression2[0], linear_regression2[1], 'k--', label= "600kHz")
-    plt.plot(linear_regression3[0], linear_regression3[1], 'b--', label= "1000kHz")
-    plt.plot(linear_regression4[0], linear_regression4[1], 'g--', label= "1200kHz" )
-    plt.plot(linear_regression5[0], linear_regression5[1], 'y--', label= "1400kHz")
+
+    
+    plt.plot(linear_regression1[0], linear_regression1[1], 'r', label= "Trial 1")
+    plt.plot(linear_regression2[0], linear_regression2[1], 'k', label= "Trial 2")
+    plt.plot(linear_regression3[0], linear_regression3[1], 'b', label= "Trial 3")
+    
     plt.legend(loc="upper left")
 
     
     #Graph title and labels
-    plt.title("Lab 4:Transmission Line", fontdict={'fontsize' : 30})
-    plt.suptitle("Nkeiru Ubadike")
-    plt.xlabel("Node number (a)")
-    plt.ylabel("Phase Shift(rad)")
+    plt.title("Number of Fringes Passed,m, as a Function of Distance Moved by Movable Mirror", fontdict={'fontsize' : 9})
+   # plt.suptitle("Number of Fringes Passed,m, as a Function of Distance Moved by Movable Mirror")
+    plt.xlabel("Fringe Number")
+    plt.ylabel("Distance [m]")
+    plt.errorbar(imported_data1[0], imported_data1[1], xerr=0.5, yerr=0.5e-6, fmt ='.r', capsize=5, capthick= 1)
+    plt.errorbar(imported_data2[0], imported_data2[1], xerr=0.5, yerr=0.5e-6, fmt ='.k', capsize=5, capthick= 1)
+    plt.errorbar(imported_data3[0], imported_data3[1], xerr=0.5, yerr=0.5e-6,fmt ='.b', capsize=5, capthick= 1)
     plt.show()
 
 #sorting Functiom
@@ -87,7 +89,7 @@ def linear_regression(imported_data):
 
     #print("Slope:",slope)
     #range_val = int(max(imported_data[0]) - min(imported_data[0])) #compute range of the x axis values
-    lin_reg_x = [i for i in range(3, 13)] #create list of elements from 0 to range 
+    lin_reg_x = [i for i in range(3, 35)] #create list of elements from 0 to range, determines how far regression goes
     lin_reg_y = [slope * i + y_intercept for i in lin_reg_x] #replace x value in equation to find the y in linear regression
     return [lin_reg_x, lin_reg_y] #return both lists
 
@@ -95,11 +97,10 @@ def linear_regression(imported_data):
 
 
 #This is where tuple is stores    
-imported_data1 = parse_file('400kHz.csv')
-imported_data2 = parse_file('600kHz.csv')
-imported_data3 = parse_file('1000kHz.csv')
-imported_data4 = parse_file('1200kHz .csv') 
-imported_data5 = parse_file('1400kHz .csv')
+imported_data1 = parse_file(r'C:\Users\Nkeiru\Google Drive\Stony Brook University\Spring 2021\Modern Physics PHY 251\LAB\Lab 1\PHY252_Lab1_T1.csv')
+imported_data2 = parse_file(r'C:\Users\Nkeiru\Google Drive\Stony Brook University\Spring 2021\Modern Physics PHY 251\LAB\Lab 1\PHY252_Lab1_T2.csv')
+imported_data3 = parse_file(r'C:\Users\Nkeiru\Google Drive\Stony Brook University\Spring 2021\Modern Physics PHY 251\LAB\Lab 1\PHY252_Lab1_T3.csv')
+
 
 
 #imported_data = sort_data(imported_data)
@@ -110,10 +111,9 @@ imported_data5 = parse_file('1400kHz .csv')
 linear_regression1 = linear_regression(imported_data1)
 linear_regression2 = linear_regression(imported_data2)
 linear_regression3 = linear_regression(imported_data3)
-linear_regression4 = linear_regression(imported_data4)
-linear_regression5 = linear_regression(imported_data5)
-plotting(imported_data1, imported_data2, imported_data3, imported_data4, imported_data5,
-    linear_regression1, linear_regression2, linear_regression3, linear_regression4, linear_regression5)
+
+plotting(imported_data1, imported_data2, imported_data3, 
+    linear_regression1, linear_regression2, linear_regression3)
 
 
 
