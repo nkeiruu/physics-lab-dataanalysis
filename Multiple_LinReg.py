@@ -3,7 +3,7 @@ import numpy as np
 #Parsing CSV file
 #Reads info line by line each column seperated by column
 
-frequencies = np.array([400, 600, 1000, 1200, 1400])
+#frequencies = np.array([400, 600, 1000, 1200, 1400])
 
 def parse_file(file_name, header= True): #header ensures python disregards header
     x_Axis_data = np.array([]) #Hold info from CSV
@@ -35,19 +35,19 @@ def plotting(imported_data1, imported_data2, imported_data3, imported_data4, imp
     plt.plot(imported_data3[0], imported_data3[1], 'bo')
     plt.plot(imported_data4[0], imported_data4[1], 'go')
     plt.plot(imported_data5[0], imported_data5[1], 'yo')
-    plt.plot(linear_regression1[0], linear_regression1[1], 'r--', label= "400kHz")
-    plt.plot(linear_regression2[0], linear_regression2[1], 'k--', label= "600kHz")
-    plt.plot(linear_regression3[0], linear_regression3[1], 'b--', label= "1000kHz")
-    plt.plot(linear_regression4[0], linear_regression4[1], 'g--', label= "1200kHz" )
-    plt.plot(linear_regression5[0], linear_regression5[1], 'y--', label= "1400kHz")
+    plt.plot(linear_regression1[0], linear_regression1[1], 'r--', label= "1.25A")
+    plt.plot(linear_regression2[0], linear_regression2[1], 'k--', label= "1.6A")
+    plt.plot(linear_regression3[0], linear_regression3[1], 'b--', label= "1.98A")
+    plt.plot(linear_regression4[0], linear_regression4[1], 'g--', label= "2.15A" )
+    plt.plot(linear_regression5[0], linear_regression5[1], 'y--', label= "2.42A")
     plt.legend(loc="upper left")
 
     
     #Graph title and labels
-    plt.title("Lab 4:Transmission Line", fontdict={'fontsize' : 30})
+    plt.title("Measurement of e/m for electron", fontdict={'fontsize' : 20})
     plt.suptitle("Nkeiru Ubadike")
-    plt.xlabel("Node number (a)")
-    plt.ylabel("Phase Shift(rad)")
+    plt.xlabel("B^2 r^2(T^2 m^2)")
+    plt.ylabel("Voltage(volts)")
     plt.show()
 
 #sorting Functiom
@@ -84,22 +84,26 @@ def linear_regression(imported_data):
     slopevals = np.array([])
     slopevals = np.append(slopevals, slope)#array of slope vals
     print(slopevals)
+    averageSlope = np.sum(slopevals)/len(slopevals)
+    #print("slope average",averageSlope)
 
     #print("Slope:",slope)
     #range_val = int(max(imported_data[0]) - min(imported_data[0])) #compute range of the x axis values
-    lin_reg_x = [i for i in range(3, 13)] #create list of elements from 0 to range 
+    lin_reg_x = np.arange(0.00005,0.00025, 0.00001) #create list of elements from 0 to range 
     lin_reg_y = [slope * i + y_intercept for i in lin_reg_x] #replace x value in equation to find the y in linear regression
+    print(lin_reg_y)
     return [lin_reg_x, lin_reg_y] #return both lists
+
 
     
 
 
 #This is where tuple is stores    
-imported_data1 = parse_file('400kHz.csv')
-imported_data2 = parse_file('600kHz.csv')
-imported_data3 = parse_file('1000kHz.csv')
-imported_data4 = parse_file('1200kHz .csv') 
-imported_data5 = parse_file('1400kHz .csv')
+imported_data1 = parse_file('calculated em ratio i 1.28.csv')
+imported_data2 = parse_file('calculated em ratio i 1.6.csv')
+imported_data3 = parse_file('calculated em ratio i 1.98.csv')
+imported_data4 = parse_file('calculated em ratio i 2.15.csv') 
+imported_data5 = parse_file('calculated em ratio i 2.42.csv')
 
 
 #imported_data = sort_data(imported_data)
