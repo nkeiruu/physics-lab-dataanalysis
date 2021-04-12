@@ -5,7 +5,7 @@ from numpy.core.fromnumeric import sort
 from scipy.optimize import curve_fit
 #rc('text', usetex=True)
 plt.rcParams["font.family"] = "serif"
-plt.style.use('fivethirtyeight')
+plt.style.use('seaborn-poster')
 
 
 
