@@ -95,11 +95,11 @@ def linear_regression(imported_data):
 
 
 #This is where tuple is stores    
-imported_data1 = parse_file('400kHz.csv')
-imported_data2 = parse_file('600kHz.csv')
-imported_data3 = parse_file('1000kHz.csv')
-imported_data4 = parse_file('1200kHz .csv') 
-imported_data5 = parse_file('1400kHz .csv')
+#imported_data1 = parse_file('400kHz.csv')
+#imported_data2 = parse_file('600kHz.csv')
+#imported_data3 = parse_file('1000kHz.csv')
+#imported_data4 = parse_file('1200kHz .csv') 
+#imported_data5 = parse_file('1400kHz .csv')
 
 
 #imported_data = sort_data(imported_data)
@@ -107,13 +107,13 @@ imported_data5 = parse_file('1400kHz .csv')
 
 
 
-linear_regression1 = linear_regression(imported_data1)
-linear_regression2 = linear_regression(imported_data2)
-linear_regression3 = linear_regression(imported_data3)
-linear_regression4 = linear_regression(imported_data4)
-linear_regression5 = linear_regression(imported_data5)
-plotting(imported_data1, imported_data2, imported_data3, imported_data4, imported_data5,
-    linear_regression1, linear_regression2, linear_regression3, linear_regression4, linear_regression5)
+##linear_regression1 = linear_regression(imported_data1)
+##linear_regression2 = linear_regression(imported_data2)
+##linear_regression3 = linear_regression(imported_data3)
+##linear_regression4 = linear_regression(imported_data4)
+##linear_regression5 = linear_regression(imported_data5)
+#plotting(imported_data1, imported_data2, imported_data3, imported_data4, imported_data5,
+ #   linear_regression1, linear_regression2, linear_regression3, linear_regression4, linear_regression5)
 
 
 
