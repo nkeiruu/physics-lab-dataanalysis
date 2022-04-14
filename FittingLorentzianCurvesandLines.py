@@ -3,17 +3,22 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-plt.rc('text', usetex=True)
-plt.rc('text.latex', preamble= r'\usepackage{amsmath}')
 
 #makes the plot look nicer in latex
-"""mpl.use('pgf')
+#mpl.use('pgf')
 plt.rcParams.update({
     "pgf.texsystem": "pdflatex",
     'font.family': 'serif',
     'text.usetex': True,
     'pgf.rcfonts': False,
-})"""
+
+    
+    
+})
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+
+
+
 
 # Parses csv file and stores them in 2 arrays
 def parse_file(file_name, header=False):
@@ -49,11 +54,11 @@ def curve_fit_lorentzian(imported_data):
     par = tuple(popt) #This is  the optimal parameters
     plt.plot(xfit,_6Lorentzian(xfit, *popt), 'r',\
     label = 'Lorentzian Fit ')
+    plt.legend(loc="upper left")
     #print('y,z ', popt)
     #label= r'fit: $A= %1.2f e^{%1.3f t}$' % tuple(popt)
     #print(par[1], par[3], par[5], par[7])
 
-   
     
 
     #Adding labels to graph
@@ -75,15 +80,12 @@ def curve_fit_lorentzian(imported_data):
         horizontalalignment="left", verticalalignment="top")
 
 
-
-   
-
     #Change plot appearance here
     plt.title("Velocity Calibration: Enriched Fe Absorber", fontdict={'fontsize' : 22})
     #plt.suptitle("Enriched Iron")
     plt.xlabel("Channels")
     plt.ylabel("Counts",fontsize=14)
-    plt.legend(loc="upper left")
+   
     
    #Adding 2nd plot
    #The x axis dta
@@ -96,12 +98,20 @@ def curve_fit_lorentzian(imported_data):
     # make a plot with different y-axis using second axis object
     axis2.plot(chnls, vlcty,"bo", markersize = 5)
     axis2.set_ylabel("Absorption Line Positions (mm/s)",color="blue",fontsize=14)
+
+    #curve fit for line
+    xfit2 = np.arange(583,950, 0.001)
+    popt2, pcov2 = curve_fit(linear, chnls,vlcty, maxfev=1000)
+    dx = 9.0
+    par2 = tuple(popt2) 
+    axis2.plot(xfit2, linear(xfit2, *popt2), 'b', label = r'Linear fit y={0:.3f}x + {1:.1f}'.format(par2[0], par2[1]))
     
+    axis2.legend(loc="upper right")
     plt.show()
     
     
     #saves as a pdf, exclude if want to see first
-    #plt.savefig('velocitcal2.pdf')
+    #plt.savefig('velocitcalfinal.pdf')
 
 
 
@@ -116,6 +126,10 @@ def _6Lorentzian(x, amp1, cen1, wid1, amp2,cen2,wid2, amp3,cen3,wid3,offset3, am
 
 """def _Lorentzian(x, amp1, cen1, wid1):
     return (-amp1*wid1**2/((x-cen1)**2+wid1**2)+21569) """
+    
+def linear(x,a,b):
+    return (a*x + b)
+
 
 imported_data = parse_file('data\Moss velocity calibration.csv', header=False)
 

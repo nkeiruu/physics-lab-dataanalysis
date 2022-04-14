@@ -53,7 +53,7 @@ def curve_fit_linear(imported_data):
     xfit = np.arange(0,len(imported_data[0]), 1)
 
     dx = 9.0
-    par = tuple(popt) #This is standard deviation of the optimal parameters
+    par = tuple(popt) #This is the optimal parameters
     plt.plot(imported_data[0], imported_data[1], 'ko')
     plt.plot(xfit, linear(xfit, *popt), 'r--', label = r'eqn: y = {0:.12f} + {1}x'.format(par[0], par[1])) #Labe fit eqn with 3 decimal places
     
