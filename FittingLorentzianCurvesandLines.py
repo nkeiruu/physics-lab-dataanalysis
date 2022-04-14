@@ -16,6 +16,7 @@ plt.rcParams.update({
     
 })
 plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+plt.rc({'pgf.preamble': r'\usepackage{amsmath}'})
 
 
 
@@ -39,10 +40,10 @@ def parse_file(file_name, header=False):
 def curve_fit_lorentzian(imported_data):
 
     #change this according to text width in latex if putting picture here
-    #plt.gcf().set_size_inches(w=7.058, h=5.4)
+    plt.gcf().set_size_inches(w=9.2, h=7.5)
 
     #use this if not putting into latex
-    plt.figure(figsize=(10,8))
+    #plt.figure(figsize=(10,8))
 
     plt.plot(imported_data[0], imported_data[1], 'ko', markersize=4)
     #Set guessesfor the function parameters
@@ -62,7 +63,7 @@ def curve_fit_lorentzian(imported_data):
     
 
     #Adding labels to graph
-    plt.text(570, 2655, 'Lorentian Center Best Fits', color='k', fontsize=8,
+    plt.text(570, 2700, 'Lorentian Center Best Fits', color='k', fontsize=8,
         horizontalalignment="right", verticalalignment="top")
 
     
@@ -75,8 +76,9 @@ def curve_fit_lorentzian(imported_data):
              r'c_6 & = {5:.1f}\\'
              r'\end{{align*}}'.format(par[1], par[4], par[7], par[10], par[15], par[18]))
             
-                     
-    plt.text(500, 2600, eq1, color='k', fontsize=8,
+       
+
+    plt.text(500, 2670, eq1, color='k', fontsize=8,
         horizontalalignment="left", verticalalignment="top")
 
 
@@ -107,12 +109,13 @@ def curve_fit_lorentzian(imported_data):
     axis2.plot(xfit2, linear(xfit2, *popt2), 'b', label = r'Linear fit y={0:.3f}x + {1:.1f}'.format(par2[0], par2[1]))
     
     axis2.legend(loc="upper right")
+    #saves as a pdf, exclude if want to see first
+    plt.savefig('velocitcalfinal.pdf')
+
     plt.show()
     
     
-    #saves as a pdf, exclude if want to see first
-    #plt.savefig('velocitcalfinal.pdf')
-
+    
 
 
 
