@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
-
+from Derived_Array_Data import new_array_formula
 
 #makes the plot look nicer in latex
 #mpl.use('pgf')
@@ -89,7 +89,7 @@ def curve_fit_lorentzian(imported_data):
     plt.ylabel("Counts",fontsize=14)
    
     
-   #Adding 2nd plot
+  """ #Adding 2nd plot
    #The x axis dta
     chnls = np.array([par[1], par[4], par[7], par[10], par[15], par[18]])
     vlcty = np.array([-5.103,-2.859,-0.615,1.065,3.309,5.553])
@@ -108,7 +108,7 @@ def curve_fit_lorentzian(imported_data):
     par2 = tuple(popt2) 
     axis2.plot(xfit2, linear(xfit2, *popt2), 'b', label = r'Linear fit y={0:.3f}x + {1:.1f}'.format(par2[0], par2[1]))
     
-    axis2.legend(loc="upper right")
+    axis2.legend(loc="upper right")"""
     #saves as a pdf, exclude if want to see first
     plt.savefig('velocitcalfinal.pdf')
 

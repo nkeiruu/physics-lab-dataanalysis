@@ -14,7 +14,7 @@ def parse_file(file_name, header=False):
             split_line = line.split(',')
             x_axis_data = np.append(x_axis_data, float(split_line[0]))
             y_axis_data = np.append(y_axis_data, float(split_line[1]))
-    return [x_axis_data, y_axis_data]
+    return (x_axis_data, y_axis_data)
 
 
 
@@ -22,23 +22,26 @@ def curve_fit_lorentzian(imported_data):
     plt.figure(figsize=(10,8))
     plt.plot(imported_data[0], imported_data[1], 'ro')
     #Set guessesfor the function parameters
-    InitialGuess = [2500,764,25]
+    InitialGuess = [1200,2]
 
-    #Curve fit for 1st Lorentzian
-    popt, pcov = curve_fit(_cos_sqrd, imported_data[0], imported_data[1], maxfev=10000)
-    xfit = np.arange(706, 813, 0.001)
+    #Curve fit 
+    popt, pcov = curve_fit(cos_sqrd, imported_data[0], imported_data[1], InitialGuess, maxfev=10000)
+    xfit = np.arange(0, 370, 0.1)
     par = tuple(popt) #This is  the optimal parameters
-    plt.plot(xfit,_cos_sqrd576y(xfit, *popt), 'b', label = r'fit eqn: $L$ = -$frac{{0:.3f}*{2:.4f}^2}{(x-{1:.4f})^2 + {2:.4f}^2}+21569$ '.format(par[0], par[1],par[2]))
-    #print('y,z ', popt)
+    plt.plot(xfit, cos_sqrd(xfit, *popt), 'b', label = r'$\frac{N_0}{2} \cos^2\left(\frac{\pi}{180}\right) \theta$')
+
+    print('frequency in radians, ',par[1])
+    freq_degrees = par[1] *(180/np.pi)
+    print('frequency in degrees, ',freq_degrees)
 
 
     
 
     #Change plot appearance here
-    plt.title("Stainless Steel Absorber", fontdict={'fontsize' : 30})
-    plt.suptitle("Isomer Shift")
-    plt.xlabel("Channels")
-    plt.ylabel("Counts")
+    plt.title(r"$\alpha$ = 0, $N_0$ ={0:.3f}".format(par[0]), fontdict={'fontsize' : 15})
+    #plt.suptitle("Isomer Shift")
+    plt.xlabel(r"$\beta$ (degrees)")
+    plt.ylabel("Coincidences")
     plt.legend(loc="upper left")
     plt.show()
 
@@ -53,10 +56,10 @@ def curve_fit_lorentzian(imported_data):
             (-amp5*wid5**2/((x-cen5)**2+wid5**2)) +\
                 (-amp6*wid6**2/((x-cen6)**2+wid6**2))"""
 
-def cos_sqrd(x, No, b, a):
-    return ((No/2)*(np.cos(b + a))^2) 
+def cos_sqrd(x, No, frq):
+    return ((No/2)*(np.cos(frq*(x*2*np.pi/360)))**2) 
 
-imported_data = parse_file('Isomer shift data to fit.csv', header=False)
+imported_data = parse_file('a=0 coincidence plot.csv', header=False)
 
 
 #plotting(imported_data, imported_data2)
