@@ -28,7 +28,7 @@ def curve_fit_lorentzian(imported_data):
     popt, pcov = curve_fit(cos_sqrd, imported_data[0], imported_data[1], InitialGuess, maxfev=10000)
     xfit = np.arange(0, 370, 0.1)
     par = tuple(popt) #This is  the optimal parameters
-    plt.plot(xfit, cos_sqrd(xfit, *popt), 'b', label = r'$\frac{N_0}{2} \cos^2\left(\frac{\pi}{180}\right) \theta$')
+    plt.plot(xfit, cos_sqrd(xfit, *popt), 'b', label = r'$\frac{N_0}{2} \cos^2\left(\frac{\pi}{180}\right) \theta +135^{0}$')
 
     print('frequency in radians, ',par[1])
     freq_degrees = par[1] *(180/np.pi)
@@ -38,11 +38,12 @@ def curve_fit_lorentzian(imported_data):
     
 
     #Change plot appearance here
-    plt.title(r"$\alpha$ = 0, $N_0$ ={0:.3f}".format(par[0]), fontdict={'fontsize' : 15})
+    plt.title(r"$\alpha$ = $135^0$, $N_0$ ={0:.3f}".format(par[0]), fontdict={'fontsize' : 15})
     #plt.suptitle("Isomer Shift")
     plt.xlabel(r"$\beta$ (degrees)")
     plt.ylabel("Coincidences")
     plt.legend(loc="upper left")
+    plt.savefig('alpha135.pdf')
     plt.show()
 
 
@@ -57,9 +58,9 @@ def curve_fit_lorentzian(imported_data):
                 (-amp6*wid6**2/((x-cen6)**2+wid6**2))"""
 
 def cos_sqrd(x, No, frq):
-    return ((No/2)*(np.cos(frq*(x*2*np.pi/360)))**2) 
+    return ((No/2)*(np.cos(frq*(x*2*np.pi/360 + (3*np.pi/4))))**2 ) 
 
-imported_data = parse_file('a=0 coincidence plot.csv', header=False)
+imported_data = parse_file('a=135.csv', header=False)
 
 
 #plotting(imported_data, imported_data2)

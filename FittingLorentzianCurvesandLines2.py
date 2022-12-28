@@ -8,18 +8,16 @@ import csv
 #from Derived_Array_Data import new_array_formula
 
 #makes the plot look nicer in latex
-#mpl.use('pgf')
-plt.rcParams.update({
+"""mpl.use('pgf')
+mpl.rcParams.update({
     "pgf.texsystem": "pdflatex",
     'font.family': 'serif',
     'text.usetex': True,
-    'pgf.rcfonts': False,
-
-    
-    
-})
-plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
-plt.rc({'pgf.preamble': r'\usepackage{amsmath}'})
+    'pgf.rcfonts': False   
+})"""
+plt.rcParams.update({'font.size': 16})
+mpl.rc('text.latex', preamble=r'\usepackage{amsmath}')
+mpl.rc({'pgf.preamble': r'\usepackage{amsmath}'})
 
 
 
@@ -53,13 +51,13 @@ def curve_fit_lorentzian(imported_data):
 
     plt.plot(imported_data[0], imported_data[1], 'ko', markersize=4)
     #Set guessesfor the function parameters
-    InitialGuess = [1000,590,20 ,1000,650,20, 950,720, 20,200, 950,780, 20, 200, 1000,830,20, 1000,930,20]
+    InitialGuess = [1000,590,20 ,1000,650,20, 950,720,20,200, 950,780,20,200, 1000,830,20, 1000,930,20, 1800]
 
     #Curve fit for Lorentzian
-    popt, pcov = curve_fit(_6Lorentzian, imported_data[0], imported_data[1], InitialGuess, maxfev=10000)
+    popt, pcov = curve_fit(_6Lorentzian_parms, imported_data[0], imported_data[1], InitialGuess, maxfev=10000)
     xfit = np.arange(480,950, 0.001)
     par = tuple(popt) #This is  the optimal parameters
-    plt.plot(xfit,_6Lorentzian(xfit, *popt), 'r',\
+    plt.plot(xfit,_6Lorentzian_parms(xfit, *popt), 'r',\
     label = 'Lorentzian Fit ')
     plt.legend(loc="upper left")
     #print('y,z ', popt)
@@ -112,7 +110,7 @@ def curve_fit_lorentzian(imported_data):
     wid6_er = par_errors[19]
 
     #Adding labels to graph
-    plt.text(570, 2700, 'Lorentian Center Best Fits', color='k', fontsize=8,
+    """ plt.text(570, 2700, 'Lorentian Center Best Fits', color='k', fontsize=8,
         horizontalalignment="right", verticalalignment="top")
 
     
@@ -123,12 +121,12 @@ def curve_fit_lorentzian(imported_data):
              r'c_4 & = {3:.1f}\\'
              r'c_5 & = {4:.1f}\\'
              r'c_6 & = {5:.1f}\\'
-             r'\end{{align*}}'.format(par[1], par[4], par[7], par[11], par[15], par[18]))
+             r'\end{{align*}}'.format(par[1], par[4], par[7], par[11], par[15], par[18]))"""
             
        
 
-    plt.text(500, 2670, eq1, color='k', fontsize=8,
-        horizontalalignment="left", verticalalignment="top")
+    #plt.text(500, 2670, eq1, color='k', fontsize=8,
+    #    horizontalalignment="left", verticalalignment="top")
 
 
     #Change plot appearance here
@@ -177,55 +175,86 @@ def curve_fit_lorentzian(imported_data):
 
     axis2.legend(loc="upper right")
 
+    
+
     #chi squares statisitic calculator
     def chi_sqrd( measurements, fit_ftn, guess):
-        chi2= lambda param: np.sum((measurements- fit_ftn(imported_data[0], param)**2/fit_ftn(imported_data[0],param)))
+        print('>>>', fit_ftn(imported_data[0], guess))
+        chi2= lambda param: np.sum((measurements-fit_ftn(imported_data[0], param))**2/fit_ftn(imported_data[0],param))
         result = minimize(chi2, guess, method='Nelder-Mead')
         chi2_min = result.fun
         print ("best fit is:", result.x, "with chi2:", chi2_min)
 
 
-    chi_sqrd(imported_data[0],_6Lorentzian,InitialGuess)
+    chi_sqrd(imported_data[1],_6Lorentzian_parmlist,InitialGuess)
 
     #saves as a pdf, exclude if want to see first
-    #plt.savefig('velocitcalfinal2.pdf')
+    plt.savefig('velocitcalfinal2.pdf')
 
     plt.show()
+
+def _6Lorentzian_parms(x,     
+                 amp1,
+                 cen1,
+                 wid1,
+                 amp2,
+                 cen2,
+                 wid2,
+                 amp3,
+                 cen3,
+                 wid3, 
+                 offset3,
+                 amp4,
+                 cen4,
+                 wid4, 
+                 offset4,
+                 amp5,
+                 cen5,
+                 wid5,
+                 amp6,
+                 cen6,
+                 wid6,
+                 off):
     
-    
-    
+    return (-amp1*wid1**2/((x-cen1)**2+wid1**2)+off) +\
+           (-amp2*wid2**2/((x-cen2)**2+wid2**2)+off) +\
+           (-amp3*wid3**2/((x-cen3)**2+wid3**2)-offset3) +\
+           (-amp4*wid4**2/((x-cen4)**2+wid4**2)-offset4) +\
+           (-amp5*wid5**2/((x-cen5)**2+wid5**2)+off) +\
+           (-amp6*wid6**2/((x-cen6)**2+wid6**2)+off)
 
 
+def _6Lorentzian_parmlist(x, parms):
+    amp1 = parms[0]
+    cen1 = parms[1]
+    wid1 = parms[2]
+    amp2 = parms[3]
+    cen2 = parms[4]
+    wid2 = parms[5]
+    amp3 = parms[6]
+    cen3 = parms[7]
+    wid3 = parms[8] 
+    offset3 = parms[9]
+    amp4 = parms[10]
+    cen4 = parms[11]
+    wid4 = parms[12] 
+    offset4 = parms[13]
+    amp5 = parms[14]
+    cen5 = parms[15]
+    wid5 = parms[16]
+    amp6 = parms[17]
+    cen6 = parms[18]
+    wid6 = parms[19]
+    off = parms[20]
 
-def _6Lorentzian(x, param):
-    #The best fit parameters
-    amp1 = param[0]
-    cen1 = param[1]
-    wid1 = param[2]
-    amp2 = param[3]
-    cen2 = param[4]
-    wid2 = param[5]
-    amp3 = param[6]
-    cen3 = param[7]
-    wid3 = param[8] 
-    offset3 = param[9]
-    amp4 = param[10]
-    cen4 = param[11]
-    wid4 = param[12] 
-    offset4 = param[13]
-    amp5 = param[14]
-    cen5 = param[15]
-    wid5 = param[16]
-    amp6 = param[17]
-    cen6 = param[18]
-    wid6 = param[19]
-    
-    return (-amp1*wid1**2/((x-cen1)**2+wid1**2)) +\
-            (-amp2*wid2**2/((x-cen2)**2+wid2**2)) +\
-            (-amp3*wid3**2/((x-cen3)**2+wid3**2)-offset3) +\
-            (-amp4*wid4**2/((x-cen4)**2+wid4**2)-offset4) +\
-            (-amp5*wid5**2/((x-cen5)**2+wid5**2)) +\
-                (-amp6*wid6**2/((x-cen6)**2+wid6**2))
+    result =  (-amp1*wid1**2/((x-cen1)**2+wid1**2)+off) +\
+              (-amp2*wid2**2/((x-cen2)**2+wid2**2)+off) +\
+              (-amp3*wid3**2/((x-cen3)**2+wid3**2)-offset3) +\
+              (-amp4*wid4**2/((x-cen4)**2+wid4**2)-offset4) +\
+              (-amp5*wid5**2/((x-cen5)**2+wid5**2)+off) +\
+              (-amp6*wid6**2/((x-cen6)**2+wid6**2)+off)
+
+    return result
 
 """def _Lorentzian(x, amp1, cen1, wid1):
     return (-amp1*wid1**2/((x-cen1)**2+wid1**2)+21569) """
@@ -234,6 +263,6 @@ def linear(x,a,b):
     return (a*x + b)
 
 
-imported_data = parse_file('data\Moss velocity calibration.csv', header=False)
+imported_data = parse_file('Moss_velocity_calibration.csv', header=False)
 parameters_file_name_write = 'moss parameters.csv'
 curve_fit_lorentzian(imported_data)
