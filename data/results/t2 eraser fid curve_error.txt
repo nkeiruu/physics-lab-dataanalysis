@@ -1,0 +1,1 @@
+The values of amp and t2 are 4.952861302456202 and 7110.577132701356The standard deviation of amp and t2 are 0.0354 and 52.7
