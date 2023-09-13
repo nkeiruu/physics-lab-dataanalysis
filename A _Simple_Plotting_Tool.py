@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 
 
 #List of x values
-xlist = [np.arange(0.5,4,0.1)]
+xlist = np.array(np.arange(0.5,4,0.1))
 
 # input Fuction
-f_x= 1/(np.exp(1/xlist)-1)
+f_x= 1/(np.exp(1/xlist )-1)
 
 
 #Plotting
